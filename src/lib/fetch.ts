@@ -4,16 +4,14 @@ export async function fetchApi<T>(
   method: "GET" | "POST" | "PUT" = "GET",
   body?: any
 ): Promise<T> {
-  let apiUrl = `${process.env.DOMAIN_URL}/api/${endpoint}`;
+  let apiUrl = `https://dotaloregasm.com/api/${endpoint}`;
 
   if (Object.keys(parameters).length > 0 && parameters.returnFields) {
     const queryParams = new URLSearchParams();
     parameters.returnFields.forEach((field: string) =>
       queryParams.append("returnFields", field)
     );
-    apiUrl = `${
-      process.env.DOMAIN_URL
-    }/api/${endpoint}?${queryParams.toString()}`;
+    apiUrl = `https://dotaloregasm.com/api/${endpoint}?${queryParams.toString()}`;
   }
 
   const res = await fetch(apiUrl, {
