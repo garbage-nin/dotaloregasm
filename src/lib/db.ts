@@ -8,5 +8,5 @@ const pool = new Pool({
     rejectUnauthorized: true, // for self-signed certs, otherwise set to true
   },
 });
-
+console.log("Connecting to database...");
 export default pool;
