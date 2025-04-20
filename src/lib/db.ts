@@ -5,8 +5,8 @@ env.config();
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: true, // for self-signed certs, otherwise set to true
+    rejectUnauthorized: false, // for self-signed certs, otherwise set to true
   },
 });
-console.log("Connecting to database...");
+
 export default pool;
