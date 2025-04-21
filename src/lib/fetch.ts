@@ -4,18 +4,15 @@ export async function fetchApi<T>(
   method: "GET" | "POST" | "PUT" = "GET",
   body?: any
 ): Promise<T> {
-  let apiUrl = `${process.env.NEXT_PUBLIC_URL}/api/${endpoint}`;
+  let apiUrl = `${process.env.DOMAIN_URL}/api/${endpoint}`;
 
-  console.log("NEXT_PUBLIC_URL", process.env.NEXT_PUBLIC_URL);
-  console.log("DOMAIN_URL", process.env.DOMAIN_URL);
-  console.log("API_KEY", process.env.API_KEY);
   if (Object.keys(parameters).length > 0 && parameters.returnFields) {
     const queryParams = new URLSearchParams();
     parameters.returnFields.forEach((field: string) =>
       queryParams.append("returnFields", field)
     );
     apiUrl = `${
-      process.env.NEXT_PUBLIC_URL
+      process.env.DOMAIN_URL
     }/api/${endpoint}?${queryParams.toString()}`;
   }
 
