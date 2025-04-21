@@ -141,9 +141,11 @@ export function LoreForm({
           lastGuessDate: new Date().toISOString(),
           lastGuessCounter: guessDetails.correct_guess + 1,
         };
-        localStorage.setItem("user_guess_state", JSON.stringify(userGuess));
 
-        setUser(userGuess);
+        setTimeout(() => {
+          localStorage.setItem("user_guess_state", JSON.stringify(userGuess));
+          setUser(userGuess);
+        }, 500);
       }
       return;
     }
