@@ -1,14 +1,14 @@
 version: "3.8"
 
 services:
-  web:
-    build:
-      dockerfile: Dockerfile
-      context: .
-      target: dev
-    ports:
-      - "3001:3001"
-    restart: unless-stopped
+  #   web:
+  #     build:
+  #       dockerfile: Dockerfile
+  #       context: .
+  #       target: dev
+  #     ports:
+  #       - "3001:3001"
+  #     restart: unless-stopped
   postgres:
     image: postgres:latest
     container_name: postgres_container
