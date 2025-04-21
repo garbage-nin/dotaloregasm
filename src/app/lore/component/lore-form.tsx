@@ -184,7 +184,7 @@ export function LoreForm({
               <div className="flex items-center pt-2 w-11/12">
                 <div className="flex flex-col items-center mr-4 w-1/5">
                   <img
-                    src={`/images/${user.lastGuessBaseName}.png`}
+                    src={`${process.env.NEXT_PUBLIC_CDN_URL}/${user.lastGuessBaseName}.png`}
                     alt="Hero"
                     className="w-20 h-20 object-cover rounded-lg"
                   />
