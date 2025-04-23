@@ -48,7 +48,6 @@ function updateSelectedHero(heroId: number) {
     UPDATE heroes 
     SET 
       updated_date = NOW(), 
-      guess_date = NOW(), 
       guess_counter = guess_counter + 1 
     WHERE id = $1
     RETURNING *;
