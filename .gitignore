@@ -43,4 +43,5 @@ yarn-error.log*
 next-env.d.ts
 
 dotadb_backup_1.sql
+dump.sql
 

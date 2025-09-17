@@ -31,6 +31,7 @@ export async function GET(req: Request) {
 
   try {
     const { rows } = await pool.query(query, values);
+    console.log(rows);
     return NextResponse.json(rows, { status: 200 });
   } catch (error) {
     return NextResponse.json(
