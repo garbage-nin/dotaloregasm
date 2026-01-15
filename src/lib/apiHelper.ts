@@ -1,25 +1,54 @@
-import pool from "@/lib/db";
+import db, { parseJsonField, parseJsonFields } from "@/lib/db";
 import { getChatCompletion } from "@/lib/openai";
 import { ROLES, PRIMARY_ATTRIBUTE, ATTACK_TYPE } from "@/constants/hero";
 
+interface HeroRow {
+  id: number;
+  data: {
+    name: string;
+    name_loc: string;
+    bio_loc: string;
+    primary_attr: number;
+    attack_capability: number;
+    role_levels: number[];
+    abilities: { lore_loc: string }[];
+  };
+  created_date: string;
+  updated_date: string;
+  guess_counter: number;
+}
+
+interface GuessRow {
+  id: number;
+  entity_id: number;
+  entity_type: string;
+  data: string;
+  created_date: string;
+  updated_date: string;
+  guess_date: string;
+  correct_guess: number;
+}
+
 export async function createGuess() {
   // get first a random hero
-  const { rows: heroes } = await pool.query(
+  const { rows: heroesRaw } = await db.query<HeroRow>(
     "SELECT * FROM heroes ORDER BY RANDOM() LIMIT 1;"
   );
 
-  let heroId = heroes[0].id;
-  let heroName = heroes[0].data.name_loc;
-  let lore = heroes[0].data.bio_loc;
+  const heroes = parseJsonFields(heroesRaw);
 
-  let skillLore = heroes[0].data.abilities
-    .map((ability: any) => ability.lore_loc)
+  const heroId = heroes[0].id;
+  const heroName = heroes[0].data.name_loc;
+  const lore = heroes[0].data.bio_loc;
+
+  const skillLore = heroes[0].data.abilities
+    .map((ability) => ability.lore_loc)
     .filter((lore: string) => lore.trim() !== "");
 
   const { lore: rephraseLoreResponse, skillLoreResponse } =
     await parseLoreSkillDetails(lore, skillLore);
 
-  let guessData = {
+  const guessData = {
     guess_hero_name: heroName,
     guess_hero_id: heroId,
     guess_skill_lore: skillLoreResponse,
@@ -30,38 +59,38 @@ export async function createGuess() {
     roles: ROLES.filter((_, index) => heroes[0].data.role_levels[index] !== 0),
   };
 
-  const result = await pool.query(
-    "INSERT INTO guesses (entity_id, entity_type, data, created_date, updated_date, correct_guess, guess_date) VALUES ($1, $2, $3, NOW(), NOW(), 0, NOW()) RETURNING *;",
-    [heroId, "hero", guessData]
+  const result = await db.query<GuessRow>(
+    "INSERT INTO guesses (entity_id, entity_type, data, created_date, updated_date, correct_guess, guess_date) VALUES (?, ?, ?, datetime('now'), datetime('now'), 0, datetime('now')) RETURNING *;",
+    [heroId, "hero", JSON.stringify(guessData)]
   );
 
   if (result?.rowCount && result.rowCount > 0) {
     updateSelectedHero(heroId);
-    return result.rows[0];
+    return parseJsonField(result.rows[0]);
   }
 
   return null;
 }
 
-function updateSelectedHero(heroId: number) {
+async function updateSelectedHero(heroId: number) {
   const query = `
-    UPDATE heroes 
-    SET 
-      updated_date = NOW(), 
-      guess_counter = guess_counter + 1 
-    WHERE id = $1
+    UPDATE heroes
+    SET
+      updated_date = datetime('now'),
+      guess_counter = guess_counter + 1
+    WHERE id = ?
     RETURNING *;
   `;
 
   try {
-    const updateHeroResult = pool.query(query, [heroId]);
+    await db.query(query, [heroId]);
     console.log("updateHeroResult: ", heroId);
   } catch (error) {
     console.log("updateHeroError: ", error);
   }
 }
 
-async function parseLoreSkillDetails(lore: string, skillLore: string) {
+async function parseLoreSkillDetails(lore: string, skillLore: string[]) {
   const rephraseLoreResponse = await getChatCompletion([
     {
       role: "system",
@@ -80,7 +109,7 @@ async function parseLoreSkillDetails(lore: string, skillLore: string) {
     },
     {
       role: "user",
-      content: `Rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. Here is the sentence: "${skillLore}"`,
+      content: `Rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. Here is the sentence: "${skillLore.join(", ")}"`,
     },
   ]);
 
