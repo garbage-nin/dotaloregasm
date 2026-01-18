@@ -38,9 +38,14 @@ export function NextHeroTimer() {
   }, []);
 
   return (
-    <div className="text-center p-4 text-xl font-semibold text-white bg-primary rounded-lg shadow-md">
-      Next hero in{" "}
-      <span className="text-green-400">{formatTime(timeLeft)}</span> UTC
+    <div className="mystical-timer text-center">
+      <div className="flex items-center justify-center gap-2">
+        <span className="text-parchment font-crimson">Next hero in</span>
+      </div>
+      <div className="mt-2">
+        <span className="timer-value">{formatTime(timeLeft)}</span>
+        <span className="text-parchment/70 text-sm ml-2">UTC</span>
+      </div>
     </div>
   );
 }

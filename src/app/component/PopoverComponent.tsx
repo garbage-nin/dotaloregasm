@@ -4,45 +4,73 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { HelpCircle } from "lucide-react";
 
 export function PopoverComponent() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">Help</Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-gold hover:text-gold-bright hover:bg-gold/10 p-2"
+        >
+          <HelpCircle className="w-5 h-5" />
+        </Button>
       </PopoverTrigger>
-      <PopoverContent className="bg-primary rounded-xl text-white shadow-md p-6 space-y-4 mx-auto w-96">
-        <h2 className="text-2xl font-bold text-white">🕹️ How to Play</h2>
-        <p>
-          Guess the Dota hero based on their lore. You have{" "}
-          <span className="font-semibold text-destructive">6 lives</span> to get
-          it right. Each incorrect guess unlocks a new clue:
+      <PopoverContent className="help-scroll rounded-lg shadow-lg p-6 space-y-4 w-80 md:w-96">
+        {/* Title */}
+        <h2 className="font-cinzel text-xl text-gold flex items-center gap-2">
+          <span>📜</span>
+          <span>How to Play</span>
+        </h2>
+
+        {/* Introduction */}
+        <p className="text-ink text-sm leading-relaxed">
+          Guess the hero based on lore clues. You have{" "}
+          <span className="font-bold text-gold">6 guesses</span>.
+          Each wrong guess reveals another clue:
         </p>
-        <ul className="list-disc list-inside space-y-2">
-          <li>
-            <span className="font-semibold">1st wrong guess:</span> Two of the
-            hero’s skills (lore-only, random order).
+
+        {/* Clue progression */}
+        <ul className="space-y-2 text-sm text-ink">
+          <li className="flex items-start gap-2">
+            <span className="text-gold shrink-0">1.</span>
+            <span>Two ability descriptions are shown.</span>
           </li>
-          <li>
-            <span className="font-semibold">2nd wrong guess:</span> The second
-            half of the hero’s lore.
+          <li className="flex items-start gap-2">
+            <span className="text-gold shrink-0">2.</span>
+            <span>More lore is revealed.</span>
           </li>
-          <li>
-            <span className="font-semibold">3rd wrong guess:</span> Two more
-            skill descriptions.
+          <li className="flex items-start gap-2">
+            <span className="text-gold shrink-0">3.</span>
+            <span>Two more abilities shown.</span>
           </li>
-          <li>
-            <span className="font-semibold">4th wrong guess:</span> The hero’s{" "}
-            <span className="italic">primary attribute</span> and{" "}
-            <span className="italic">roles</span>.
+          <li className="flex items-start gap-2">
+            <span className="text-gold shrink-0">4.</span>
+            <span>
+              <em className="text-gold-dim">Attribute</em> and{" "}
+              <em className="text-gold-dim">roles</em> shown.
+            </span>
           </li>
-          <li>
-            <span className="font-semibold">Final clue:</span> The hero’s{" "}
-            <span className="italic">attack type</span> (Melee or Ranged).
+          <li className="flex items-start gap-2">
+            <span className="text-gold shrink-0">5.</span>
+            <span>
+              <em className="text-gold-dim">Attack type</em> revealed.
+            </span>
           </li>
         </ul>
-        <p className="text-sm text-muted-foreground italic">
-          Guess wisely — you only have six chances!
+
+        {/* Divider */}
+        <div className="flex items-center gap-2">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-dim/50 to-transparent" />
+          <span className="text-gold-dim text-xs">◆</span>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-dim/50 to-transparent" />
+        </div>
+
+        {/* Note */}
+        <p className="text-ink-faded text-xs text-center">
+          Choose carefully!
         </p>
       </PopoverContent>
     </Popover>

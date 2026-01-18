@@ -6,6 +6,7 @@ export default async function LorePage() {
     returnFields: ["name_loc", "name"],
   };
   const heroesResp = await fetchApi<any>("heroes", parameters);
+  console.log(heroesResp);
   const guessResp: GuessesType = await fetchApi<any>("guesses");
   const heroeList = heroesResp.map((hero: any) => ({
     id: hero.id,
