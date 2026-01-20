@@ -91,26 +91,28 @@ async function updateSelectedHero(heroId: number) {
 }
 
 async function parseLoreSkillDetails(lore: string, skillLore: string[]) {
-  const rephraseLoreResponse = await getChatCompletion([
-    {
-      role: "system",
-      content: `You are a writer, book reader, and Dota fan. Your task is to summarize into 10 max sentence the provided lore while removing any proper nouns (e.g., hero names, locations, and specific character names). Additionally, avoid mentioning any species, races, or entity classifications (e.g., trolls, ogres, humans, elves, demons). Ensure the summary retains the meaning and essence of the original story without referring to specific names or classifications. `,
-    },
-    {
-      role: "user",
-      content: `Here is the lore: "${lore}". Please summarize it in only max 10 sentence. Remove all proper nouns, including character names, locations, and organizations. Additionally, do not mention any species, races, or entity classifications (e.g., trolls, ogres, humans, elves, demons). Ensure the summary retains the meaning and essence of the original story without referring to specific names or classifications.`,
-    },
-  ]);
-
-  const skillLoreResponse = await getChatCompletion([
-    {
-      role: "system",
-      content: `You are a writer, book reader, and Dota fan. Your task is to rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. `,
-    },
-    {
-      role: "user",
-      content: `Rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. Here is the sentence: "${skillLore.join(", ")}"`,
-    },
+  // Run both OpenAI calls in parallel to reduce latency
+  const [rephraseLoreResponse, skillLoreResponse] = await Promise.all([
+    getChatCompletion([
+      {
+        role: "system",
+        content: `You are a writer, book reader, and Dota fan. Your task is to summarize into 10 max sentence the provided lore while removing any proper nouns (e.g., hero names, locations, and specific character names). Additionally, avoid mentioning any species, races, or entity classifications (e.g., trolls, ogres, humans, elves, demons). Ensure the summary retains the meaning and essence of the original story without referring to specific names or classifications. `,
+      },
+      {
+        role: "user",
+        content: `Here is the lore: "${lore}". Please summarize it in only max 10 sentence. Remove all proper nouns, including character names, locations, and organizations. Additionally, do not mention any species, races, or entity classifications (e.g., trolls, ogres, humans, elves, demons). Ensure the summary retains the meaning and essence of the original story without referring to specific names or classifications.`,
+      },
+    ]),
+    getChatCompletion([
+      {
+        role: "system",
+        content: `You are a writer, book reader, and Dota fan. Your task is to rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. `,
+      },
+      {
+        role: "user",
+        content: `Rephrase the sentence while removing any proper nouns. Additionally, do not mention any species, races, or entity classifications. The response should looks the same and an array of strings. Here is the sentence: "${skillLore.join(", ")}"`,
+      },
+    ]),
   ]);
 
   return {

@@ -4,8 +4,7 @@ const client = createClient({
   url: process.env.TURSO_DATABASE_URL!,
   authToken: process.env.TURSO_AUTH_TOKEN!,
 });
-console.log("url env:", process.env.TURSO_DATABASE_URL!);
-console.log("auth env:", process.env.TURSO_AUTH_TOKEN!);
+
 export interface QueryResult<T = Row> {
   rows: T[];
   rowCount: number;
