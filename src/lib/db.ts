@@ -2,7 +2,7 @@ import { createClient, Row } from "@libsql/client";
 
 const client = createClient({
   url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN,
+  authToken: process.env.TURSO_AUTH_TOKEN!,
 });
 
 export interface QueryResult<T = Row> {
@@ -12,7 +12,7 @@ export interface QueryResult<T = Row> {
 
 export async function query<T = Row>(
   sql: string,
-  args: (string | number | null)[] = []
+  args: (string | number | null)[] = [],
 ): Promise<QueryResult<T>> {
   const result = await client.execute({ sql, args });
   return {
