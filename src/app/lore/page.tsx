@@ -11,9 +11,9 @@ export default async function LorePage() {
   const heroeList = heroesResp.map((hero: any) => ({
     id: hero.id,
     label: hero.name_loc,
-    image: `${process.env.CDN_URL}/${hero.name.replace(
+    image: `${process.env.NEXT_PUBLIC_CDN_URL}/${hero.name.replace(
       "npc_dota_hero_",
-      ""
+      "",
     )}.png`,
   }));
 
