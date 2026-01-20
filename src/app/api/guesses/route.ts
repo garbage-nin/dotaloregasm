@@ -28,7 +28,15 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ ...parsed, statusCode: 200 }, { status: 200 });
   } catch (error) {
     return NextResponse.json(
-      { error: (error as Error).message, status: 500 },
+      {
+        error: (error as Error).message,
+        status: 500,
+        debug: {
+          hasUrl: !!process.env.TURSO_DATABASE_URL,
+          hasToken: !!process.env.TURSO_AUTH_TOKEN,
+          urlStart: process.env.TURSO_DATABASE_URL?.substring(0, 30)
+        }
+      },
       { status: 500 }
     );
   }
