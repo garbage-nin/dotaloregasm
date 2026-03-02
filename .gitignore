@@ -45,3 +45,4 @@ next-env.d.ts
 dotadb_backup_1.sql
 dump.sql
 
+.env*.local

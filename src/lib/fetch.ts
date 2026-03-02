@@ -4,16 +4,18 @@ export async function fetchApi<T>(
   method: "GET" | "POST" | "PUT" = "GET",
   body?: any
 ): Promise<T> {
-  let apiUrl = `${process.env.DOMAIN_URL}/api/${endpoint}`;
+  const baseUrl = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.DOMAIN_URL;
+
+  let apiUrl = `${baseUrl}/api/${endpoint}`;
 
   if (Object.keys(parameters).length > 0 && parameters.returnFields) {
     const queryParams = new URLSearchParams();
     parameters.returnFields.forEach((field: string) =>
       queryParams.append("returnFields", field)
     );
-    apiUrl = `${
-      process.env.DOMAIN_URL
-    }/api/${endpoint}?${queryParams.toString()}`;
+    apiUrl = `${baseUrl}/api/${endpoint}?${queryParams.toString()}`;
   }
 
   const res = await fetch(apiUrl, {

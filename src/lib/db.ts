@@ -1,9 +1,16 @@
-import { createClient, Row } from "@libsql/client";
+import { createClient, Client, Row } from "@libsql/client";
 
-const client = createClient({
-  url: process.env.TURSO_DATABASE_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-});
+let _client: Client | null = null;
+
+function getClient(): Client {
+  if (!_client) {
+    _client = createClient({
+      url: process.env.TURSO_DATABASE_URL!,
+      authToken: process.env.TURSO_AUTH_TOKEN!,
+    });
+  }
+  return _client;
+}
 
 export interface QueryResult<T = Row> {
   rows: T[];
@@ -14,7 +21,7 @@ export async function query<T = Row>(
   sql: string,
   args: (string | number | null)[] = [],
 ): Promise<QueryResult<T>> {
-  const result = await client.execute({ sql, args });
+  const result = await getClient().execute({ sql, args });
   return {
     rows: result.rows as T[],
     rowCount: result.rowsAffected,
@@ -34,5 +41,5 @@ export function parseJsonFields<T extends Record<string, any>>(rows: T[]): T[] {
   return rows.map(parseJsonField);
 }
 
-export { client };
-export default { query, parseJsonField, parseJsonFields, client };
+export { getClient as client };
+export default { query, parseJsonField, parseJsonFields, client: getClient };
