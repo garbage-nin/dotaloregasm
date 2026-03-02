@@ -1,25 +1,17 @@
 export default function Footer() {
   return (
     <footer className="relative z-20 mt-auto">
-      {/* Top decorative border */}
-      <div className="h-px bg-gradient-to-r from-transparent via-wood/50 to-transparent" />
+      {/* Top line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-steel/30 to-transparent" />
 
       {/* Footer content */}
-      <div className="bg-leather/60 backdrop-blur-sm px-6 py-4">
+      <div className="bg-void/60 backdrop-blur-sm px-6 py-4">
         <div className="container mx-auto text-center">
-          {/* Decorative elements */}
-          <div className="flex justify-center gap-2 mb-2">
-            <span className="text-gold-dim text-xs">◈</span>
-            <span className="text-gold-dim text-xs">◈</span>
-            <span className="text-gold-dim text-xs">◈</span>
-          </div>
-
-          {/* Copyright */}
-          <p className="text-parchment/60 text-sm font-crimson">
+          <p className="text-mist/50 text-sm font-rajdhani">
             &copy; {new Date().getFullYear()} dotaloregasm.com
           </p>
-          <p className="text-parchment/40 text-xs mt-1">
-            All Dota 2 content belongs to Valve Corporation
+          <p className="text-mist/30 text-xs mt-0.5">
+            Dota 2 is a registered trademark of Valve Corporation
           </p>
         </div>
       </div>

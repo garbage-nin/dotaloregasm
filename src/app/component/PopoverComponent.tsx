@@ -4,7 +4,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { HelpCircle } from "lucide-react";
+import { HelpCircle, BookOpen, Swords, Gem, Crosshair } from "lucide-react";
 
 export function PopoverComponent() {
   return (
@@ -13,64 +13,51 @@ export function PopoverComponent() {
         <Button
           variant="ghost"
           size="sm"
-          className="text-gold hover:text-gold-bright hover:bg-gold/10 p-2"
+          className="text-mist hover:text-immortal hover:bg-immortal/5 p-2 transition-colors"
         >
           <HelpCircle className="w-5 h-5" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="help-scroll rounded-lg shadow-lg p-6 space-y-4 w-80 md:w-96">
+      <PopoverContent className="help-panel rounded-xl shadow-2xl p-6 space-y-4 w-80 md:w-96 border-steel">
         {/* Title */}
-        <h2 className="font-cinzel text-xl text-gold flex items-center gap-2">
-          <span>📜</span>
-          <span>How to Play</span>
-        </h2>
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-immortal/10 flex items-center justify-center">
+            <BookOpen className="w-4 h-4 text-immortal" />
+          </div>
+          <h2 className="font-cinzel text-lg text-immortal">How to Play</h2>
+        </div>
 
-        {/* Introduction */}
-        <p className="text-ink text-sm leading-relaxed">
-          Guess the hero based on lore clues. You have{" "}
-          <span className="font-bold text-gold">6 guesses</span>.
-          Each wrong guess reveals another clue:
+        {/* Intro */}
+        <p className="text-silver text-sm leading-relaxed">
+          Guess the hero from lore clues. You have{" "}
+          <span className="font-bold text-immortal">6 guesses</span>.
+          Each wrong guess reveals more:
         </p>
 
         {/* Clue progression */}
-        <ul className="space-y-2 text-sm text-ink">
-          <li className="flex items-start gap-2">
-            <span className="text-gold shrink-0">1.</span>
-            <span>Two ability descriptions are shown.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-gold shrink-0">2.</span>
-            <span>More lore is revealed.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-gold shrink-0">3.</span>
-            <span>Two more abilities shown.</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-gold shrink-0">4.</span>
-            <span>
-              <em className="text-gold-dim">Attribute</em> and{" "}
-              <em className="text-gold-dim">roles</em> shown.
-            </span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-gold shrink-0">5.</span>
-            <span>
-              <em className="text-gold-dim">Attack type</em> revealed.
-            </span>
-          </li>
-        </ul>
-
-        {/* Divider */}
-        <div className="flex items-center gap-2">
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-dim/50 to-transparent" />
-          <span className="text-gold-dim text-xs">◆</span>
-          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold-dim/50 to-transparent" />
+        <div className="space-y-2.5">
+          {[
+            { icon: <BookOpen className="w-3.5 h-3.5" />, color: "text-immortal", bg: "bg-immortal/10", text: "Two ability descriptions" },
+            { icon: <BookOpen className="w-3.5 h-3.5" />, color: "text-immortal", bg: "bg-immortal/10", text: "More lore is revealed" },
+            { icon: <Swords className="w-3.5 h-3.5" />, color: "text-arcane", bg: "bg-arcane/10", text: "Two more abilities" },
+            { icon: <Gem className="w-3.5 h-3.5" />, color: "text-mystic", bg: "bg-mystic/10", text: "Attribute & roles shown" },
+            { icon: <Crosshair className="w-3.5 h-3.5" />, color: "text-crimson", bg: "bg-crimson/10", text: "Attack type revealed" },
+          ].map((item, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className={`w-6 h-6 rounded-md ${item.bg} flex items-center justify-center flex-shrink-0`}>
+                <span className={item.color}>{item.icon}</span>
+              </div>
+              <span className="text-silver text-sm">{item.text}</span>
+            </div>
+          ))}
         </div>
 
+        {/* Divider */}
+        <div className="h-px bg-gradient-to-r from-transparent via-steel to-transparent" />
+
         {/* Note */}
-        <p className="text-ink-faded text-xs text-center">
-          Choose carefully!
+        <p className="text-mist text-xs text-center tracking-wide">
+          Choose wisely, Ancient one.
         </p>
       </PopoverContent>
     </Popover>

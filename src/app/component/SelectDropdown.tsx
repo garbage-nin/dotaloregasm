@@ -21,7 +21,7 @@ import {
 export function SelectDropdown({
   dropdownValues,
   placeholder = "Please select...",
-  noFoundText = "No hero found in the tome...",
+  noFoundText = "No hero found...",
   disabled = false,
   onSelectChange,
 }: {
@@ -43,36 +43,38 @@ export function SelectDropdown({
           disabled={disabled}
           className={cn(
             "w-full flex items-center justify-between px-4 py-3",
-            "bg-parchment border-2 border-wood rounded",
-            "text-ink font-crimson text-left",
+            "bg-obsidian/80 border border-steel rounded-lg",
+            "text-frost font-rajdhani text-left text-base",
             "transition-all duration-200",
-            "hover:border-gold/50 hover:shadow-md",
-            "focus:outline-none focus:ring-2 focus:ring-gold/30 focus:border-gold",
-            disabled && "opacity-50 cursor-not-allowed hover:border-wood"
+            "hover:border-immortal/40 hover:bg-obsidian",
+            "focus:outline-none focus:ring-2 focus:ring-immortal/20 focus:border-immortal/50",
+            disabled && "opacity-40 cursor-not-allowed hover:border-steel"
           )}
         >
-          <span className="flex items-center gap-2">
-            <Search className="w-4 h-4 text-ink-faded" />
-            {value
-              ? dropdownValues.find(
-                  (dropdownValue) => dropdownValue.label === value
-                )?.label
-              : placeholder}
+          <span className="flex items-center gap-2.5">
+            <Search className="w-4 h-4 text-mist" />
+            <span className={value ? "text-frost" : "text-mist"}>
+              {value
+                ? dropdownValues.find(
+                    (dropdownValue) => dropdownValue.label === value
+                  )?.label
+                : placeholder}
+            </span>
           </span>
-          <ChevronsUpDown className="w-4 h-4 text-ink-faded" />
+          <ChevronsUpDown className="w-4 h-4 text-mist" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-full min-w-[var(--radix-popover-trigger-width)] p-0 dropdown-tome">
+      <PopoverContent className="w-full min-w-[var(--radix-popover-trigger-width)] p-0 aegis-dropdown">
         <Command className="w-full bg-transparent">
-          <div className="border-b border-wood/30 p-2">
+          <div className="border-b border-steel/40 p-2">
             <CommandInput
               placeholder={placeholder}
-              className="h-9 bg-parchment-light border border-wood/50 rounded px-3 text-ink placeholder:text-ink-faded focus:border-gold focus:ring-1 focus:ring-gold/30"
+              className="h-9 bg-void/60 border border-steel/50 rounded-md px-3 text-frost placeholder:text-mist focus:border-immortal/40 focus:ring-1 focus:ring-immortal/20 font-rajdhani"
               disabled={disabled}
             />
           </div>
           <CommandList className="w-full max-h-60">
-            <CommandEmpty className="w-full px-4 py-6 text-center text-ink-faded italic">
+            <CommandEmpty className="w-full px-4 py-6 text-center text-mist text-sm">
               {noFoundText}
             </CommandEmpty>
             <CommandGroup>
@@ -86,22 +88,21 @@ export function SelectDropdown({
                     setOpen(false);
                   }}
                   disabled={disabled}
-                  className="dropdown-tome-item cursor-pointer hover:bg-gold/10 data-[selected=true]:bg-gold/20"
+                  className="aegis-dropdown-item hover:bg-arcane/5 data-[selected=true]:bg-arcane/10"
                 >
                   <div className="flex items-center gap-3 flex-1">
-                    {/* Hero portrait in medallion style */}
-                    <div className="w-10 h-10 rounded-full border-2 border-bronze overflow-hidden bg-leather flex-shrink-0">
+                    <div className="w-9 h-9 rounded-full border border-steel overflow-hidden bg-void flex-shrink-0">
                       <img
                         src={dropdownValue.image}
                         alt={dropdownValue.label}
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <span className="font-crimson text-ink">{dropdownValue.label}</span>
+                    <span className="font-rajdhani text-frost text-sm">{dropdownValue.label}</span>
                   </div>
                   <Check
                     className={cn(
-                      "ml-auto w-4 h-4 text-gold",
+                      "ml-auto w-4 h-4 text-arcane",
                       value === dropdownValue.label
                         ? "opacity-100"
                         : "opacity-0"

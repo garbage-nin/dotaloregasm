@@ -15,15 +15,13 @@ const getNextMidnightUTC = (): number => {
   return nextMidnight.getTime();
 };
 
-const formatTime = (ms: number): string => {
+const formatTime = (ms: number): { hours: string; minutes: string; seconds: string } => {
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
-  const hours = String(Math.floor(totalSeconds / 3600)).padStart(2, "0");
-  const minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(
-    2,
-    "0"
-  );
-  const seconds = String(totalSeconds % 60).padStart(2, "0");
-  return `${hours}:${minutes}:${seconds}`;
+  return {
+    hours: String(Math.floor(totalSeconds / 3600)).padStart(2, "0"),
+    minutes: String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, "0"),
+    seconds: String(totalSeconds % 60).padStart(2, "0"),
+  };
 };
 
 export function NextHeroTimer() {
@@ -37,15 +35,33 @@ export function NextHeroTimer() {
     return () => clearInterval(interval);
   }, []);
 
+  const { hours, minutes, seconds } = formatTime(timeLeft);
+
   return (
-    <div className="mystical-timer text-center">
-      <div className="flex items-center justify-center gap-2">
-        <span className="text-parchment font-crimson">Next hero in</span>
+    <div className="aegis-timer">
+      <p className="text-mist text-sm font-rajdhani tracking-wide uppercase mb-3">
+        Next hero in
+      </p>
+      <div className="flex items-center justify-center gap-1">
+        {/* Hours */}
+        <div className="timer-digit-group">
+          <span className="timer-digit">{hours[0]}</span>
+          <span className="timer-digit">{hours[1]}</span>
+        </div>
+        <span className="timer-separator">:</span>
+        {/* Minutes */}
+        <div className="timer-digit-group">
+          <span className="timer-digit">{minutes[0]}</span>
+          <span className="timer-digit">{minutes[1]}</span>
+        </div>
+        <span className="timer-separator">:</span>
+        {/* Seconds */}
+        <div className="timer-digit-group">
+          <span className="timer-digit">{seconds[0]}</span>
+          <span className="timer-digit">{seconds[1]}</span>
+        </div>
       </div>
-      <div className="mt-2">
-        <span className="timer-value">{formatTime(timeLeft)}</span>
-        <span className="text-parchment/70 text-sm ml-2">UTC</span>
-      </div>
+      <p className="text-mist/40 text-xs mt-2 tracking-wider">UTC</p>
     </div>
   );
 }

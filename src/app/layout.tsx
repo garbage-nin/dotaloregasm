@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cinzel_Decorative, Crimson_Pro } from "next/font/google";
+import { Cinzel_Decorative, Rajdhani } from "next/font/google";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
 import "./globals.css";
@@ -13,10 +13,10 @@ const cinzel = Cinzel_Decorative({
   variable: "--font-cinzel",
 });
 
-const crimson = Crimson_Pro({
+const rajdhani = Rajdhani({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-crimson",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-rajdhani",
 });
 
 export const metadata: Metadata = {
@@ -30,12 +30,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${cinzel.variable} ${crimson.variable}`}>
+    <html lang="en" className={`${cinzel.variable} ${rajdhani.variable}`}>
       <UserProvider>
-        <body className="font-crimson antialiased">
+        <body className="font-rajdhani antialiased">
           <div className="flex flex-col min-h-screen relative">
-            {/* Vignette overlay */}
-            <div className="fixed inset-0 pointer-events-none z-50 vignette-overlay" />
             <Header />
             <main className="flex-1 container mx-auto p-4 relative z-10">
               <Suspense fallback={<Loading />}>{children}</Suspense>
