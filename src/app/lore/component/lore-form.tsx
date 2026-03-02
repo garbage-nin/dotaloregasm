@@ -61,6 +61,26 @@ export function LoreForm({
 
   const unlockedCount = 7 - guessCount;
 
+  // Restore in-progress session from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("game_session");
+      if (!saved) return;
+      const session = JSON.parse(saved);
+      if (session.puzzleId === guessDetails.id) {
+        setGuessCount(session.guessCount);
+        setGuessList(session.guessList);
+        if (session.guessCount === 0) {
+          setDisabledDropdown(true);
+        }
+      } else {
+        localStorage.removeItem("game_session");
+      }
+    } catch {
+      localStorage.removeItem("game_session");
+    }
+  }, [guessDetails.id]);
+
   useEffect(() => {
     if (guessCount === 0) {
       setDisabledDropdown(true);
@@ -97,14 +117,22 @@ export function LoreForm({
 
         setTimeout(() => {
           localStorage.setItem("user_guess_state", JSON.stringify(userGuess));
+          localStorage.removeItem("game_session");
           setUser(userGuess);
         }, 500);
       }
       return;
     }
-    setGuessList([...guessList, image]);
+    const newGuessList = [...guessList, image];
+    const newGuessCount = guessCount - 1;
+    setGuessList(newGuessList);
     setSelectedHero(value);
-    setGuessCount(guessCount - 1);
+    setGuessCount(newGuessCount);
+    localStorage.setItem("game_session", JSON.stringify({
+      puzzleId: guessDetails.id,
+      guessCount: newGuessCount,
+      guessList: newGuessList,
+    }));
   }
 
   function renderClueContent(data: any, index: number) {
